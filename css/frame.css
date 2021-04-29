@@ -1,9 +1,14 @@
+/* BODY */
+body {
+    font-family: 'Roboto';
+}
 /* VARIABLES
 ---------------------------------------------------
 */
 :root {
     /* colors */
-    
+    --clr-primary: #a00304;
+    --clr-secondary:#434343;
 	/* fonts */
 }
 

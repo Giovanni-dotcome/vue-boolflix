@@ -1,0 +1,18 @@
+/* NAVIGATION */
+nav {
+    padding: 1.5em 1em;
+    background-color: black;
+}
+h1 {
+    font-size: 2em;
+    color: var(--clr-primary);
+}
+.search-bar {
+    border: 1px solid var(--clr-secondary);
+    border-radius: 15px;
+    padding: .5em 1em;
+}
+.search-bar input {
+    color: white;
+
+}
