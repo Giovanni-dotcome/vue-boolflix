@@ -23,9 +23,15 @@
         <main>
             <ul>
                 <li v-for="movie in movies">
-                    <div class="title">{{movie.title}}</div>
-                    <div class="original-title">{{movie.original_title}}</div>
-                    <div class="language">{{movie.original_language}}</div>
+                    <div class="title">
+                        <div v-if="movie.hasOwnProperty('original_name')">{{movie.original_name}}</div>
+                        <div v-else class="original-title">{{movie.original_title}}</div>
+                    </div>
+                    <div class="flag">
+                        <div v-if="movie.original_language === 'en'"><img src="https://flagcdn.com/us.svg" width="30"></div>
+                        <div v-else-if="movie.original_language === 'hi'"><img src="https://flagcdn.com/in.svg" width="30"></div>
+                        <div v-else class="language"><img :src="'https://flagcdn.com/' + movie.original_language + '.svg'" width="30" alt="flag not found"></div>
+                    </div>
                     <div class="vote">{{movie.vote_average}}</div>
                 </li>
             </ul>
