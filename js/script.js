@@ -3,7 +3,6 @@ var app = new Vue({
     data: {
         searched:'',
         movies: [],
-        test: 'us'
     },
     methods: {
         searchMovie() {
@@ -11,6 +10,9 @@ var app = new Vue({
                 this.movies = response.data.results;
                 this.searched = '';
             })
+        },
+        getStars(movie) {
+           return movie.vote_average * 10 + '%'
         }
     }
 })

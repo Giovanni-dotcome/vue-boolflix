@@ -23,19 +23,25 @@
         <main>
             <ul>
                 <li v-for="movie in movies">
-                    <div class="title">
-                        <div v-if="movie.hasOwnProperty('original_name')">{{movie.original_name}}</div>
-                        <div v-else class="original-title">{{movie.original_title}}</div>
+                    <div class="front">
+                        <img :src="'https://image.tmdb.org/t/p/w342/' + movie.backdrop_path" alt="">
                     </div>
-                    <div class="flag">
-                        <div v-if="movie.original_language === 'en'"><img src="https://flagcdn.com/us.svg" width="30"></div>
-                        <div v-else-if="movie.original_language === 'hi'"><img src="https://flagcdn.com/in.svg" width="30"></div>
-                        <div v-else class="language"><img :src="'https://flagcdn.com/' + movie.original_language + '.svg'" width="30" alt="flag not found"></div>
-                    </div>
-                    <div class="vote">{{movie.vote_average}}</div>
+                    <div class="retro">
+                        <div class="title">
+                            <div v-if="movie.hasOwnProperty('original_name')">{{movie.original_name}}</div>
+                            <div v-else>{{movie.original_title}}</div>
+                        </div>
+                        <div class="flag">
+                            <div v-if="movie.original_language === 'en'"><img src="https://flagcdn.com/us.svg" width="30"></div>
+                            <div v-else-if="movie.original_language === 'hi'"><img src="https://flagcdn.com/in.svg" width="30"></div>
+                            <div v-else class="language"><img :src="'https://flagcdn.com/' + movie.original_language + '.svg'" width="30" alt="flag not found"></div>
+                        </div>
+                        <div class="star-ratings-sprite"><span :style="{width: getStars(movie)}" class="star-ratings-sprite-rating"></span></div>
+                    </div>    
                 </li>
             </ul>
         </main>
+        </div>
     </div>
     <script src="js/script.js"></script>
 </body>
