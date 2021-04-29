@@ -1,3 +1,8 @@
+/* BODY */
+body {
+    background-color: var(--clr-secondary);
+}
+
 /* NAVIGATION */
 nav {
     padding: 1.5em 1em;
@@ -17,6 +22,32 @@ h1 {
 
 }
 
+/* MAIN */
+.front {
+    height: 100%;
+}
+.backdrop {
+    object-fit: cover;
+}
+.retro .h2 {
+    color: white;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+.retro {
+    color: var(--clr-secondary);
+}
+.retro > * {
+    text-align: center;
+    padding: .25em 0;
+}
+.card {
+    background-color: black;
+    width: 342px;
+    height: 300px;
+    padding: 1em;
+    margin: 1em;
+}
 /* rating-stars */
 .star-ratings-sprite {
     background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2605/star-rating-sprite.png") repeat-x;

@@ -10,9 +10,18 @@ var app = new Vue({
                 this.movies = response.data.results;
                 this.searched = '';
             })
+
+        },
+        beforeUpdate() {
+            this.movies.forEach(movie => {
+                movie.visible = true
+            }); 
         },
         getStars(movie) {
            return movie.vote_average * 10 + '%'
+        },
+        flip(movie) {
+            movie.visible = !movie.visible;
         }
     }
 })
