@@ -82,27 +82,6 @@ var app = new Vue({
             axios.get("https://api.themoviedb.org/3/genre/movie/list?api_key=2d61f612414428cd866f192ad6c518ae&language=en-US").then(response => {
                 this.fullGenresList = response.data.genres
             })
-        },
-        selectGenre() {
-            this.movies.forEach()
-            if (this.selectedGenre === 'all') {
-
-            }
-            // if (this.selectedGenre != 'all') {
-            //     this.movies.forEach(movie => {
-            //         if (movie.genres.length != 0) {
-            //             movie.genres.forEach( genre => {
-            //                 if (this.selectedGenre == genre) {
-            //                     movie.visible = true
-            //                 }
-            //             })
-            //         }
-            //     })
-            // } else {
-            //     this.movies.forEach(movie => {
-            //         movie.visible = true
-            //     })
-            // }
         }
     }
 })
