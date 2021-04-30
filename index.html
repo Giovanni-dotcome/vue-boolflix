@@ -25,6 +25,13 @@
                     <option v-for="genre in fullGenresList" v-bind:value="genre.name">{{genre.name}}</option>
                 </select>
             </div>
+            <div class="filter">
+                <select v-model="selectedShowType" v-on:change="selectShowType()">
+                    <option value="all">all</option>
+                    <option value="movie">movie</option>
+                    <option value="TV">TV</option>
+                </select>
+            </div>
         </nav>
         <div class="container">
             <main class="deck">

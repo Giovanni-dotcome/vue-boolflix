@@ -6,6 +6,7 @@ var app = new Vue({
         infoVisibility: false,
         fullGenresList: undefined,
         selectedGenre: '',
+        selectedShowType: '',
         activeMovie: [],
     },
     mounted() {
@@ -83,6 +84,19 @@ var app = new Vue({
                     }
                 })
             })      
+        },
+        selectShowType() {
+            if (this.selectedShowType == 'all') {
+                this.movies.forEach( movie => {
+                    movie.visible = true
+                })
+            } else {
+                this.movies.forEach(movie => {
+                    if (movie.media_type != this.selectedShowType) {
+                        movie.visible = false
+                    } 
+                })
+            }
         },
         addVisibility() {
             this.movies.forEach( movie => {
