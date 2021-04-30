@@ -1,14 +1,11 @@
 var app = new Vue({
     el: '#root',
     data: {
-        searched:'',
+        searchedMovie:'',
         movies: [],
         infoVisibility: false,
-        cast: [],
         fullGenresList: undefined,
-        genresList: [],
-        genres: [],
-        selected: '',
+        selectedGenre: '',
         activeMovie: [],
     },
     mounted() {
@@ -17,13 +14,13 @@ var app = new Vue({
     beforeUpdate() {
         this.addVisibility()
         this.getCast()
-        // this.getGenres()
+        this.getGenres()
     },
     methods: {
         searchMovie() {
-            axios.get(`https://api.themoviedb.org/3/search/multi?api_key=2d61f612414428cd866f192ad6c518ae&query=${this.searched}`).then(response => {
+            axios.get(`https://api.themoviedb.org/3/search/multi?api_key=2d61f612414428cd866f192ad6c518ae&query=${this.searchedMovie}`).then(response => {
                 this.movies = response.data.results;
-                this.searched = '';
+                this.searchedMovie = '';
             })
         },
         getStars(movie) {
@@ -42,15 +39,20 @@ var app = new Vue({
                 }
             })
         },
-        // getGenres(movie) {
-        //     this.fullGenresList.forEach(genre => {
-        //         movie.genre_ids.forEach(id => {
-        //             if (id == genre.id) {
-        //                 this.genres.push(genre.name);
-        //             }
-        //         });
-        //     });
-        // },
+        getGenres() {
+            this.movies.forEach(movie => {
+                if (!movie.hasOwnProperty('genre')) {
+                    movie.genres = []
+                    movie.genre_ids.forEach(id =>{
+                        this.fullGenresList.forEach(genre => {
+                            if (id == genre.id) {
+                                movie.genres.push(genre.name)
+                            }
+                        });
+                    })
+                }
+            })
+        },
         openInfo(movie) {
             this.infoVisibility = true
             this.activeMovie = movie
@@ -73,16 +75,15 @@ var app = new Vue({
                 this.fullGenresList = response.data.genres
             })
         },
-        // selectGenre() {
-        //     this.movies.forEach(movie => {
-        //         movie.genres.forEach(genre => {
-        //             if (genre != this.selected) {
-        //                 movie.visible = false
-        //             }
-        //         })
-        //     })
-            
-        // },
+        selectGenre() {
+            this.movies.forEach( movie => {
+                movie.genres.forEach(genre => {
+                    if (genre !== this.selectedGenre) {
+                        movie.visible = false
+                    }
+                })
+            })      
+        },
         addVisibility() {
             this.movies.forEach( movie => {
                 movie.visible = true;
@@ -90,6 +91,3 @@ var app = new Vue({
         }
     }
 })
-// https://api.themoviedb.org/3/search/movie?api_key=2d61f612414428cd866f192ad6c518ae&query=rambo
-
-// https://api.themoviedb.org/3/genre/movie/list?api_key=2d61f612414428cd866f192ad6c518ae&language=en-US

@@ -18,18 +18,18 @@
     <div id="root">
         <nav class="flex-row-between">
             <h1>BOOLFLIX</h1>
-            <div class="search-bar"><input type="text" placeholder="search" v-model="searched" v-on:keyup.enter="searchMovie()"></div>
+            <div class="search-bar"><input type="text" placeholder="search" v-model="searchedMovie" v-on:keyup.enter="searchMovie()"></div>
             <div class="filter">
-                <!-- <select  v-model="selected" v-on:change="selectGenre()">
+                <select v-model="selectedGenre" v-on:change="selectGenre()">
                     <option value=""></option>
-                    <option v-for="genre in fullGenresList" value="genre">{{genre.name}}</option>
-                </select> -->
+                    <option v-for="genre in fullGenresList" v-bind:value="genre.name">{{genre.name}}</option>
+                </select>
             </div>
         </nav>
         <div class="container">
             <main class="deck">
                 <ul class="flex-row-around">
-                    <li class="card" v-for="movie in movies">
+                    <li v-show="movie.visible" class="card" v-for="movie in movies">
                         <div class="front flex-row-center">
                             <img class="backdrop" :src="'https://image.tmdb.org/t/p/w342/' + movie.backdrop_path" alt="">
                         </div>
@@ -60,6 +60,7 @@
                     </div>
                     <div class="genres">
                         <div class="title">genre:</div>
+                        <div v-for="genre in activeMovie.genres">{{genre}}</div>
                     </div>
                     <button class="button" v-on:click="closeInfo()">close</button>
                 </div>
