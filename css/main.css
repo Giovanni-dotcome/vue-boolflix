@@ -36,6 +36,7 @@ h1 {
 }
 .retro {
     color: var(--clr-secondary);
+    display: none;
 }
 .retro > * {
     text-align: center;
@@ -47,6 +48,15 @@ h1 {
     height: 300px;
     padding: 1em;
     margin: 1em;
+}
+.card > * {
+    padding-bottom: .5em;
+}
+.card:hover .front{
+    display: none;
+}
+.card:hover .retro{
+    display: block;
 }
 /* rating-stars */
 .star-ratings-sprite {
@@ -67,3 +77,26 @@ h1 {
     height: 21px;
     display:block;
 } 
+
+/* CAST */
+.button {
+    margin-top: 1em;
+    border-radius: 15px;
+    cursor: pointer;
+    color: white;
+    background-color: var(--clr-secondary);
+    border: 1px solid var(--clr-primary);
+    padding: .5em 1em;
+    text-align: center;
+}
+
+.cast-container {
+    border: 1px solid red;
+    background-color: white;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    height: 50%;
+    transform: translate(-50%, -50%);
+}

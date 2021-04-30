@@ -23,11 +23,11 @@
         <div class="container">
             <main class="deck">
                 <ul class="flex-row-around">
-                    <li v-on:mouseenter="flip(movie)" class="card" v-for="movie in movies">
-                        <div v-if="movie.visible" class="front flex-row-center">
+                    <li class="card" v-for="movie in movies">
+                        <div class="front flex-row-center">
                             <img class="backdrop" :src="'https://image.tmdb.org/t/p/w342/' + movie.backdrop_path" alt="">
                         </div>
-                        <div v-else class="retro">
+                        <div class="retro">
                             <div class="title">
                                 <div v-if="movie.hasOwnProperty('original_name')"><span class="h2">Title: </span> {{movie.original_name}}</div>
                                 <div v-else><span class="h2">Title: </span> {{movie.original_title}}</div>
@@ -37,13 +37,28 @@
                                 <div v-else-if="movie.original_language === 'hi'"><span class="h2">Country</span> <img src="https://flagcdn.com/in.svg" width="30"></div>
                                 <div v-else class="language"><span class="h2">Country: </span> <img :src="'https://flagcdn.com/' + movie.original_language + '.svg'" width="30" alt="flag not found"></div>
                             </div>
-                            
                             <div class="star-ratings-sprite"><span :style="{width: getStars(movie)}" class="star-ratings-sprite-rating"></span></div>
-                            <div><span class="h2">overview: <br></span> {{movie.overview}}</div>
-                        </div>    
+                            <div><span class="h2">overview: <br></span> {{renderOverview(movie)}}</div>
+                            <div class="flex-row-center">
+                                <button v-on:click=" openInfo(), seeCast(movie), seeGenres(movie)" class="button">see info</button>
+                            </div>
+                        </div>
                     </li>
                 </ul>
             </main>
+            <div v-show="infoVisibility" class="cast-container flex-row-center">
+                <div class="info">
+                    <div class="cast">
+                        <div class="title">cast:</div>
+                        <div v-for="actor in cast">{{actor}}</div>
+                    </div>
+                    <div class="genres">
+                        <div class="title">genre:</div>
+                        <div v-for="genre in genres">{{genre}}</div> 
+                    </div>
+                    <button class="button" v-on:click="closeInfo()">close</button>
+                </div>
+            </div>
         </div>
     </div>
     <script src="js/script.js"></script>
