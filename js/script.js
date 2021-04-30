@@ -4,7 +4,7 @@ var app = new Vue({
         searchedMovie:'',
         movies: [],
         infoVisibility: false,
-        fullGenresList: undefined,
+        fullGenresList: [],
         selectedGenre: '',
         selectedShowType: '',
         activeMovie: [],
@@ -13,46 +13,53 @@ var app = new Vue({
         this.getFullGenresList()
     },
     beforeUpdate() {
-        this.addVisibility()
         this.getCast()
         this.getGenres()
     },
     methods: {
         searchMovie() {
             axios.get(`https://api.themoviedb.org/3/search/multi?api_key=2d61f612414428cd866f192ad6c518ae&query=${this.searchedMovie}`).then(response => {
+                response.data.results.forEach(data => {
+                    data.visible = true
+                })
                 this.movies = response.data.results;
                 this.searchedMovie = '';
-            })
+            });
+            
         },
         getStars(movie) {
            return movie.vote_average * 10 + '%'
         },
         getCast(){
-            this.movies.forEach(movie => {
-                if (!movie.hasOwnProperty('cast')) {
-                    movie.cast = []
-                    axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=2d61f612414428cd866f192ad6c518ae&movie_id=${movie.id}`).then(response => {
-                    for (let i = 0; i < 5; i++) {
-                            obj = {actor: response.data.cast[i].original_name,character: response.data.cast[i].character}
-                            movie.cast.push(obj)
-                        }
-                    })
-                }
-            })
+            if (this.movies.length != 0) {
+                this.movies.forEach(movie => {
+                    if (!movie.hasOwnProperty('cast')) {
+                        movie.cast = []
+                        axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=2d61f612414428cd866f192ad6c518ae&movie_id=${movie.id}`).then(response => {
+                        for (let i = 0; i < 5; i++) {
+                                obj = {actor: response.data.cast[i].original_name,character: response.data.cast[i].character}
+                                movie.cast.push(obj)
+                            }
+                        })
+                    }
+                })
+            }  
         },
         getGenres() {
-            this.movies.forEach(movie => {
-                if (!movie.hasOwnProperty('genre')) {
-                    movie.genres = []
-                    movie.genre_ids.forEach(id =>{
-                        this.fullGenresList.forEach(genre => {
-                            if (id == genre.id) {
-                                movie.genres.push(genre.name)
-                            }
-                        });
-                    })
-                }
-            })
+            if (this.movies.length !=0) {
+                this.movies.forEach(movie => {
+                    if (!movie.hasOwnProperty('genres')) {
+                        movie.genres = []
+                        movie.genre_ids.forEach(id =>{
+                            this.fullGenresList.forEach(genre => {
+                                if (id == genre.id) {
+                                    movie.genres.push(genre.name)
+                                }
+                            });
+                        })
+                    }
+                })
+            }
         },
         openInfo(movie) {
             this.infoVisibility = true
@@ -77,31 +84,25 @@ var app = new Vue({
             })
         },
         selectGenre() {
-            this.movies.forEach( movie => {
-                movie.genres.forEach(genre => {
-                    if (genre !== this.selectedGenre) {
-                        movie.visible = false
-                    }
-                })
-            })      
-        },
-        selectShowType() {
-            if (this.selectedShowType == 'all') {
-                this.movies.forEach( movie => {
-                    movie.visible = true
-                })
-            } else {
-                this.movies.forEach(movie => {
-                    if (movie.media_type != this.selectedShowType) {
-                        movie.visible = false
-                    } 
-                })
+            this.movies.forEach()
+            if (this.selectedGenre === 'all') {
+
             }
-        },
-        addVisibility() {
-            this.movies.forEach( movie => {
-                movie.visible = true;
-            })
+            // if (this.selectedGenre != 'all') {
+            //     this.movies.forEach(movie => {
+            //         if (movie.genres.length != 0) {
+            //             movie.genres.forEach( genre => {
+            //                 if (this.selectedGenre == genre) {
+            //                     movie.visible = true
+            //                 }
+            //             })
+            //         }
+            //     })
+            // } else {
+            //     this.movies.forEach(movie => {
+            //         movie.visible = true
+            //     })
+            // }
         }
     }
 })
