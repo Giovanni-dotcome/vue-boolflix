@@ -19,6 +19,12 @@
         <nav class="flex-row-between">
             <h1>BOOLFLIX</h1>
             <div class="search-bar"><input type="text" placeholder="search" v-model="searched" v-on:keyup.enter="searchMovie()"></div>
+            <div class="filter">
+                <!-- <select  v-model="selected" v-on:change="selectGenre()">
+                    <option value=""></option>
+                    <option v-for="genre in fullGenresList" value="genre">{{genre.name}}</option>
+                </select> -->
+            </div>
         </nav>
         <div class="container">
             <main class="deck">
@@ -40,7 +46,7 @@
                             <div class="star-ratings-sprite"><span :style="{width: getStars(movie)}" class="star-ratings-sprite-rating"></span></div>
                             <div><span class="h2">overview: <br></span> {{renderOverview(movie)}}</div>
                             <div class="flex-row-center">
-                                <button v-on:click=" openInfo(), seeCast(movie), seeGenres(movie)" class="button">see info</button>
+                                <button v-on:click="openInfo(movie)" class="button">see info</button>
                             </div>
                         </div>
                     </li>
@@ -50,11 +56,10 @@
                 <div class="info">
                     <div class="cast">
                         <div class="title">cast:</div>
-                        <div v-for="actor in cast">{{actor}}</div>
+                            <div v-for="actor in activeMovie.cast">{{actor.actor}} as: {{actor.character}}</div>
                     </div>
                     <div class="genres">
                         <div class="title">genre:</div>
-                        <div v-for="genre in genres">{{genre}}</div> 
                     </div>
                     <button class="button" v-on:click="closeInfo()">close</button>
                 </div>

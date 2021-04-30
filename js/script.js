@@ -8,9 +8,16 @@ var app = new Vue({
         fullGenresList: undefined,
         genresList: [],
         genres: [],
+        selected: '',
+        activeMovie: [],
     },
     mounted() {
-        this.getGenres()
+        this.getFullGenresList()
+    },
+    beforeUpdate() {
+        this.addVisibility()
+        this.getCast()
+        // this.getGenres()
     },
     methods: {
         searchMovie() {
@@ -22,25 +29,31 @@ var app = new Vue({
         getStars(movie) {
            return movie.vote_average * 10 + '%'
         },
-        seeCast(movie){
-            this.cast = [];
-            axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=2d61f612414428cd866f192ad6c518ae&movie_id=${movie.id}`).then(response => {
-                for (let i = 0; i < 5; i++) {
-                    this.cast.push(`${response.data.cast[i].original_name} as: ${response.data.cast[i].character}`)
+        getCast(){
+            this.movies.forEach(movie => {
+                if (!movie.hasOwnProperty('cast')) {
+                    movie.cast = []
+                    axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=2d61f612414428cd866f192ad6c518ae&movie_id=${movie.id}`).then(response => {
+                    for (let i = 0; i < 5; i++) {
+                            obj = {actor: response.data.cast[i].original_name,character: response.data.cast[i].character}
+                            movie.cast.push(obj)
+                        }
+                    })
                 }
             })
         },
-        seeGenres(movie) {
-            this.fullGenresList.forEach(genre => {
-                movie.genre_ids.forEach(id => {
-                    if (id == genre.id) {
-                        this.genres.push(genre.name);
-                    }
-                });
-            });
-        },
-        openInfo() {
+        // getGenres(movie) {
+        //     this.fullGenresList.forEach(genre => {
+        //         movie.genre_ids.forEach(id => {
+        //             if (id == genre.id) {
+        //                 this.genres.push(genre.name);
+        //             }
+        //         });
+        //     });
+        // },
+        openInfo(movie) {
             this.infoVisibility = true
+            this.activeMovie = movie
         },
         closeInfo(){
             this.infoVisibility = false
@@ -55,9 +68,24 @@ var app = new Vue({
                 return 'overview unavailable'
             }
         },
-        getGenres(){
+        getFullGenresList(){
             axios.get("https://api.themoviedb.org/3/genre/movie/list?api_key=2d61f612414428cd866f192ad6c518ae&language=en-US").then(response => {
                 this.fullGenresList = response.data.genres
+            })
+        },
+        // selectGenre() {
+        //     this.movies.forEach(movie => {
+        //         movie.genres.forEach(genre => {
+        //             if (genre != this.selected) {
+        //                 movie.visible = false
+        //             }
+        //         })
+        //     })
+            
+        // },
+        addVisibility() {
+            this.movies.forEach( movie => {
+                movie.visible = true;
             })
         }
     }

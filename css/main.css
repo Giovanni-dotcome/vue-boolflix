@@ -21,6 +21,14 @@ h1 {
     color: white;
 
 }
+.filter {
+    border: 1px solid var(--clr-secondary);
+    border-radius: 15px;
+    color: white;
+}
+.filter select{
+    color: white;
+}
 
 /* MAIN */
 .front {
@@ -91,7 +99,6 @@ h1 {
 }
 
 .cast-container {
-    border: 1px solid red;
     background-color: white;
     position: fixed;
     top: 50%;
