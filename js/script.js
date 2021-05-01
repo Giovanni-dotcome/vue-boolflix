@@ -3,6 +3,7 @@ var app = new Vue({
     data: {
         searchedMovie:'',
         movies: [],
+        moviesFiltered: [],
         infoVisibility: false,
         fullGenresList: [],
         selectedGenre: '',
@@ -23,6 +24,7 @@ var app = new Vue({
                     data.visible = true
                 })
                 this.movies = response.data.results;
+                this.moviesFiltered = this.movies
                 this.searchedMovie = '';
             });
             
@@ -82,6 +84,22 @@ var app = new Vue({
             axios.get("https://api.themoviedb.org/3/genre/movie/list?api_key=2d61f612414428cd866f192ad6c518ae&language=en-US").then(response => {
                 this.fullGenresList = response.data.genres
             })
+        },
+        selectGenre() {
+            if (this.selectedGenre !== "all") {
+                this.moviesFiltered = this.movies.filter(movie => {
+                    if (movie.genre_ids != undefined) {
+                        // movie.genre_ids.forEach(id => {
+                        //     if (id == this.selectedGenre) {
+                        //         return true
+                        //     }
+                        // })
+                        return true
+                    }
+                })
+            } else {
+                this.moviesFiltered = this.movies
+            }            
         }
     }
 })
