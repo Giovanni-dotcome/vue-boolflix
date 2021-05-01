@@ -94,7 +94,13 @@ var app = new Vue({
                         //         return true
                         //     }
                         // })
-                        return true
+                        let flag = false;
+                        for (let i = 0; i < movie.genre_ids.length -1; i++) {
+                            if (movie.genre_ids[i] == this.selectedGenre) {
+                                flag = true;
+                            }
+                        }
+                        return flag
                     }
                 })
             } else {
