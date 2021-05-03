@@ -17,7 +17,7 @@ var app = new Vue({
     },
     beforeUpdate() {
         this.getCast()
-        this.getGenres()
+        // this.getGenres()
     },
     methods: {
         searchMovie() {
@@ -71,20 +71,20 @@ var app = new Vue({
                 }
             })
         },
-        getGenres() {
-            this.movies.forEach(movie => {
-                if (!movie.hasOwnProperty('genres')) {
-                    movie.genres = []
-                    movie.genre_ids.forEach(id =>{
-                        this.fullGenresList.forEach(genre => {
-                            if (id == genre.id) {
-                                movie.genres.push(genre.name)
-                            }
-                        });
-                    })
-                }
-            })
-        },
+        // getGenres() {
+        //     this.movies.forEach(movie => {
+        //         if (!movie.hasOwnProperty('genres')) {
+        //             movie.genres = []
+        //             movie.genre_ids.forEach(id =>{
+        //                 this.fullGenresList.forEach(genre => {
+        //                     if (id == genre.id) {
+        //                         movie.genres.push(genre.name)
+        //                     }
+        //                 });
+        //             })
+        //         }
+        //     })
+        // },
         openInfo(movie) {
             this.infoVisibility = true
             this.activeMovie = movie
