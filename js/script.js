@@ -89,18 +89,13 @@ var app = new Vue({
             if (this.selectedGenre !== "all") {
                 this.moviesFiltered = this.movies.filter(movie => {
                     if (movie.genre_ids != undefined) {
-                        // movie.genre_ids.forEach(id => {
-                        //     if (id == this.selectedGenre) {
-                        //         return true
-                        //     }
-                        // })
                         let flag = false;
                         for (let i = 0; i < movie.genre_ids.length -1; i++) {
                             if (movie.genre_ids[i] == this.selectedGenre) {
                                 flag = true;
                             }
                         }
-                        return flag
+                        return flag         
                     }
                 })
             } else {
