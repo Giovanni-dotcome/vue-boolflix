@@ -1,6 +1,8 @@
 var app = new Vue({
     el: '#root',
     data: {
+        url: `https://api.themoviedb.org/3`,
+        api_key: '2d61f612414428cd866f192ad6c518ae',
         searchedMovie:'',
         movies: [],
         moviesFiltered: [],
@@ -19,7 +21,12 @@ var app = new Vue({
     },
     methods: {
         searchMovie() {
-            axios.get(`https://api.themoviedb.org/3/search/multi?api_key=2d61f612414428cd866f192ad6c518ae&query=${this.searchedMovie}`).then(response => {
+            axios.get(`${this.url}/search/multi?`, {
+                params: {
+                    api_key: this.api_key,
+                    query: this.searchedMovie
+                }
+            }).then(response => {
                 this.movies = response.data.results;
                 this.moviesFiltered = this.movies
                 this.searchedMovie = '';
@@ -32,32 +39,51 @@ var app = new Vue({
             this.movies.forEach(movie => {
                 if (!movie.hasOwnProperty('cast')) {
                     movie.cast = []
-                    axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=2d61f612414428cd866f192ad6c518ae&movie_id=${movie.id}`).then(response => {
-                    for (let i = 0; i < 5; i++) {
-                            if (response.data.cast[i] != undefined) {
-                                obj = {actor: response.data.cast[i].original_name, character: response.data.cast[i].character}
-                                movie.cast.push(obj)
+                    if (movie.media_type === 'movie') {
+                        axios.get(`${this.url}/movie/${movie.id}/credits?`, {
+                            params: {
+                                api_key: this.api_key,
+                                movie_id: movie.id
                             }
-                        }
-                    })
+                        }).then(response => {
+                        for (let i = 0; i < 5; i++) {
+                                if (response.data.cast[i] != undefined) {
+                                    obj = {actor: response.data.cast[i].original_name, character: response.data.cast[i].character}
+                                    movie.cast.push(obj)
+                                }
+                            }
+                        })
+                    } else {
+                        axios.get(`${this.url}/tv/${movie.id}/credits?`, {
+                            params: {
+                                api_key: this.api_key,
+                                movie_id: movie.id
+                            }
+                        }).then(response => {
+                        for (let i = 0; i < 5; i++) {
+                                if (response.data.cast[i] != undefined) {
+                                    obj = {actor: response.data.cast[i].original_name, character: response.data.cast[i].character}
+                                    movie.cast.push(obj)
+                                }
+                            }
+                        })
+                    } 
                 }
             })
         },
         getGenres() {
-            if (this.movies.genre_ids != undefined) {
-                this.movies.forEach(movie => {
-                    if (!movie.hasOwnProperty('genres')) {
-                        movie.genres = []
-                        movie.genre_ids.forEach(id =>{
-                            this.fullGenresList.forEach(genre => {
-                                if (id == genre.id) {
-                                    movie.genres.push(genre.name)
-                                }
-                            });
-                        })
-                    }
-                })
-            }       
+            this.movies.forEach(movie => {
+                if (!movie.hasOwnProperty('genres')) {
+                    movie.genres = []
+                    movie.genre_ids.forEach(id =>{
+                        this.fullGenresList.forEach(genre => {
+                            if (id == genre.id) {
+                                movie.genres.push(genre.name)
+                            }
+                        });
+                    })
+                }
+            })
         },
         openInfo(movie) {
             this.infoVisibility = true
