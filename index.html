@@ -31,7 +31,7 @@
                 <ul class="flex-row-around">
                     <li class="card" v-for="movie in moviesFiltered">
                         <div class="front flex-row-center">
-                            <img class="backdrop" :src="'https://image.tmdb.org/t/p/w342/' + movie.backdrop_path" alt="">
+                            <img v-if="movie.backdrop_path != undefined || movie.backdrop_path != null" class="backdrop" :src="'https://image.tmdb.org/t/p/w342/' + movie.backdrop_path" alt="">
                         </div>
                         <div class="retro">
                             <div class="title">
@@ -41,7 +41,7 @@
                             <div class="flag">
                                 <div v-if="movie.original_language === 'en'"><span class="h2">country</span> <img src="https://flagcdn.com/us.svg" width="30"></div>
                                 <div v-else-if="movie.original_language === 'hi'"><span class="h2">Country</span> <img src="https://flagcdn.com/in.svg" width="30"></div>
-                                <div v-else class="language"><span class="h2">Country: </span> <img :src="'https://flagcdn.com/' + movie.original_language + '.svg'" width="30" alt="flag not found"></div>
+                                <div v-else-if="movie.original_language != undefined || movie.original_language != null" class="language"><span class="h2">Country: </span> <img :src="'https://flagcdn.com/' + movie.original_language + '.svg'" width="30" alt="flag not found"></div>
                             </div>
                             <div class="star-ratings-sprite"><span :style="{width: getStars(movie)}" class="star-ratings-sprite-rating"></span></div>
                             <div><span class="h2">overview: <br></span> {{renderOverview(movie)}}</div>

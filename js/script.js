@@ -17,7 +17,6 @@ var app = new Vue({
     },
     beforeUpdate() {
         this.getCast()
-        // this.getGenres()
     },
     methods: {
         searchMovie() {
@@ -42,8 +41,7 @@ var app = new Vue({
                     if (movie.media_type === 'movie') {
                         axios.get(`${this.url}/movie/${movie.id}/credits?`, {
                             params: {
-                                api_key: this.api_key,
-                                movie_id: movie.id
+                                api_key: this.api_key
                             }
                         }).then(response => {
                         for (let i = 0; i < 5; i++) {
@@ -53,11 +51,10 @@ var app = new Vue({
                                 }
                             }
                         })
-                    } else {
+                    } else if (movie.media_type === 'tv') {
                         axios.get(`${this.url}/tv/${movie.id}/credits?`, {
                             params: {
-                                api_key: this.api_key,
-                                movie_id: movie.id
+                                api_key: this.api_key
                             }
                         }).then(response => {
                         for (let i = 0; i < 5; i++) {
@@ -67,24 +64,11 @@ var app = new Vue({
                                 }
                             }
                         })
+                        
                     } 
                 }
             })
         },
-        // getGenres() {
-        //     this.movies.forEach(movie => {
-        //         if (!movie.hasOwnProperty('genres')) {
-        //             movie.genres = []
-        //             movie.genre_ids.forEach(id =>{
-        //                 this.fullGenresList.forEach(genre => {
-        //                     if (id == genre.id) {
-        //                         movie.genres.push(genre.name)
-        //                     }
-        //                 });
-        //             })
-        //         }
-        //     })
-        // },
         openInfo(movie) {
             this.infoVisibility = true
             this.activeMovie = movie
@@ -103,7 +87,12 @@ var app = new Vue({
             }
         },
         getFullGenresList(){
-            axios.get("https://api.themoviedb.org/3/genre/movie/list?api_key=2d61f612414428cd866f192ad6c518ae&language=en-US").then(response => {
+            axios.get(`${this.url}/genre/movie/list?`, {
+                params: {
+                    api_key: this.api_key,
+                    language: `en-US`,
+                }
+            }).then(response => {
                 this.fullGenresList = response.data.genres
             })
         },
@@ -112,7 +101,7 @@ var app = new Vue({
                 this.moviesFiltered = this.movies.filter(movie => {
                     if (movie.genre_ids != undefined) {
                         let flag = false;
-                        for (let i = 0; i < movie.genre_ids.length -1; i++) {
+                        for (let i = 0; i < movie.genre_ids.length; i++) {
                             if (movie.genre_ids[i] == this.selectedGenre) {
                                 flag = true;
                             }
