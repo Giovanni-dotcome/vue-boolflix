@@ -37,7 +37,7 @@ var app = new Vue({
         getCast(){
             this.movies.forEach(movie => {
                 if (!movie.hasOwnProperty('cast')) {
-                    movie.cast = []
+                    this.$set(movie, 'cast', []);
                     if (movie.media_type === 'movie') {
                         axios.get(`${this.url}/movie/${movie.id}/credits?`, {
                             params: {
